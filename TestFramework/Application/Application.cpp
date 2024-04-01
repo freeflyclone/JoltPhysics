@@ -317,10 +317,10 @@ void Application::UpdateCamera(float inDeltaTime)
 	if (mKeyboard->IsKeyPressed(DIK_S))		mLocalCamera.mPos -= speed * mLocalCamera.mForward;
 
 	// Forward
-	float heading, pitch;
+	float heading, pitch, mouseScaler = 0.025f;
 	GetCameraLocalHeadingAndPitch(heading, pitch);
-	heading += DegreesToRadians(mMouse->GetDX() * 0.5f);
-	pitch = Clamp(pitch - DegreesToRadians(mMouse->GetDY() * 0.5f), -0.49f * JPH_PI, 0.49f * JPH_PI);
+	heading += DegreesToRadians(mMouse->GetDX() * mouseScaler);
+	pitch = Clamp(pitch - DegreesToRadians(mMouse->GetDY() * mouseScaler), -0.49f * JPH_PI, 0.49f * JPH_PI);
 	mLocalCamera.mForward = Vec3(Cos(pitch) * Cos(heading), Sin(pitch), Cos(pitch) * Sin(heading));
 
 	// Convert to world space
