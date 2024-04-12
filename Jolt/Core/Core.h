@@ -7,7 +7,7 @@
 // Jolt library version
 #define JPH_VERSION_MAJOR 5
 #define JPH_VERSION_MINOR 0
-#define JPH_VERSION_PATCH 0
+#define JPH_VERSION_PATCH 1
 
 // Determine which features the library was compiled with
 #ifdef JPH_DOUBLE_PRECISION
@@ -307,6 +307,7 @@
 	JPH_GCC_SUPPRESS_WARNING("-Wcomment")														\
 	JPH_GCC_SUPPRESS_WARNING("-Winvalid-offsetof")												\
 	JPH_GCC_SUPPRESS_WARNING("-Wclass-memaccess")												\
+	JPH_GCC_SUPPRESS_WARNING("-Wpedantic")														\
 																								\
 	JPH_MSVC_SUPPRESS_WARNING(4619) /* #pragma warning: there is no warning number 'XXXX' */	\
 	JPH_MSVC_SUPPRESS_WARNING(4514) /* 'X' : unreferenced inline function has been removed */	\
@@ -477,8 +478,13 @@ static_assert(sizeof(void *) == (JPH_CPU_ADDRESS_BITS == 64? 8 : 4), "Invalid si
 // Stack allocation
 #define JPH_STACK_ALLOC(n)		alloca(n)
 
-// Shorthand for #ifdef _DEBUG / #endif
-#ifdef _DEBUG
+// Determine if we want extra debugging code to be active
+#if !defined(NDEBUG) && !defined(JPH_NO_DEBUG)
+	#define JPH_DEBUG
+#endif
+
+// Shorthand for #ifdef JPH_DEBUG / #endif
+#ifdef JPH_DEBUG
 	#define JPH_IF_DEBUG(...)	__VA_ARGS__
 	#define JPH_IF_NOT_DEBUG(...)
 #else
